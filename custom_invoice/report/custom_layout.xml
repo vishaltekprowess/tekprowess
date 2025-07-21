@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Header -->
+    <template id="tek_header_layout">
+        <div class="header">
+            <div class="row">
+                <div class="col-6 text-start row" style="height: 0px;margin-top: 4px;">
+                    <!-- <div class="col-3">
+                        <img src="/custom_invoice/static/src/img/invoice-logo-2.png" style="border-right: 1px solid #000;width: 65px;height: 55px;padding-right: 5px;"/>
+                    </div> -->
+                    <div class="col-12" style="font-size: 14px;">
+                        <strong>
+                            <p style="margin-bottom: 0px;font-family: 'LyonArabicDisplaySlantedotf'!important; font-size: 15px;">
+                            مؤسسة فارس لخدمات الأعمــــــــــــــــــــــــــــــــــــــــــــــال
+                            </p>
+                        </strong>
+                        <p style="margin-bottom: 0px;font-family: 'LyonArabicDisplaySlantedotf'!important; font-size:13px">Fares Business Services Establishment</p>
+                        <p style="margin-bottom: 0px;font-family: 'LyonArabicDisplaySlantedotf'!important; font-size: 14px;">4030554248 : السجل التجـــــــــــــــــــــــــــــــــــــــــــاري</p>
+                        <p style="margin-bottom: 0px;font-family: 'LyonArabicDisplaySlantedotf'!important; font-size: 14px;">311876020200003 : الرقم الضريبــــــــــــــي</p>
+                    </div>
+                </div>
+                <!-- <div class="col-4 text-center">
+                    <img src="/custom_invoice/static/src/img/invoice-middle-logo.png" style="width: 200px;height: 80px;margin-top: -4px;"/>
+                </div> -->
+
+                <div class="col-6 text-right">
+                    <img class="logo_custom" style="margin-top: -40px !important;" t-att-src="image_data_uri(company.logo)" alt="Logo" />
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Footer -->
+    <template id="tek_footer_layout">
+        <div class="footer o_boxed_footer_custom">
+
+        </div>
+    </template>
+
+    <!-- Base layout using header and footer -->
+    <template id="tek_base_layout">
+        <t t-call="custom_invoice.tek_header_layout" />
+        <t t-out="0"/>
+        <t t-call="custom_invoice.tek_footer_layout" />
+    </template>
+
+    <!-- Address block containing user address data -->
+    <template id="tek_address_layout">
+        <t t-set="colclass" t-value="('col-sm-5' if report_type == 'html' else 'col-5') + ' ms-auto'" />
+        <t t-if="address">
+            <div class="user_info_block">
+
+                <t t-if="o._name == 'account.move'">
+
+                    <div style="margin-bottom: 10px">
+                        
+                        <b> التاريخ :</b>
+                        <!-- <span t-if="o.invoice_date and context_timestamp" t-esc="o.invoice_date.strftime('%Y-%m-%d')" /> -->
+
+                        <b style="margin-right: 100px;"> تاريخ التوصيل :</b>
+                        <!-- <span t-if="o.l10n_sa_delivery_date and context_timestamp" t-esc="o.l10n_sa_delivery_date.strftime('%Y-%m-%d')" /> -->
+                    </div>
+                </t>
+                <t t-else="">
+                    <div>
+                        <span t-if="datetime and context_timestamp" t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')" />
+                        <b> : التاريخ</b>
+                    </div>
+                </t>
+
+                <div>
+                    <span t-field="o.name" />
+                    <b> : الرقم التسلسل </b>
+                </div>
+                <h1 style="color: black;">
+                    <div style="margin: 2px;">
+                        <div class="text-center" style="font-size: 45px;">
+                            <t t-if="o._name == 'sale.order'">
+                                <t t-if="env.context.get('proforma', False) or is_pro_forma">
+                                    فاتورة أولية 
+                                </t>
+                                <t t-else="">
+                                    عرض سعـــر
+                                </t>
+                                <!-- فاتورة ضريبية -->
+                            </t>
+                            <t t-elif="o._name == 'stock.picking'">
+                                سند تسليم البضاعة                            
+                            </t>
+                            <t t-elif="o._name == 'account.move'">
+                                <t t-if="o.move_type == 'out_invoice' and o.state == 'cancel'">
+                                    فاتورة ملغاة
+                                </t>
+                                <t t-elif="o.move_type == 'out_refund'">
+                                    إشعار خصم
+                                </t>
+                                <t t-elif="o.move_type == 'in_refund'">
+                                    إشعار خصم المورد
+                                </t>
+                                <t t-elif="o.move_type == 'in_invoice'">
+                                    فاتورة المورد
+                                </t>
+                                <t t-else="">
+                                    فاتورة ضريبية
+                                </t>
+                            </t>
+                            <t t-else="">
+                                فاتورة ضريبية
+                            </t>
+                        </div>
+                    </div>
+                </h1>
+                <div>
+                    <div class="addressAdditionalInfo" style="width:100% !important;">
+                        <h4 style="padding-top: 3px; text-align: end;
+    margin-right: 10px; ">العميــــــــــل</h4>
+                    </div>
+                </div>
+
+                <div style="word-wrap: break-word; white-space: normal;width: 99%;">
+                    <div style="margin-top: 10px;">
+                        <span t-field="o.partner_id.name" style="unicode-bidi: embed; direction: ltr;" />
+                        <b>:الإسم</b>
+                    </div>
+                    <div t-if="o.partner_id.org_no">
+                        <span t-field="o.partner_id.org_no" />
+                        <b>:رقم السجل التجاري</b>
+                    </div>
+                    <div>
+                        <span t-if="o.partner_id.country_id.name" t-esc="o.with_context(lang='ar_001').partner_id.country_id.name" style="unicode-bidi: embed; direction: ltr;" />
+                        ,                        <span t-if="o.partner_id.state_id.name" t-esc="o.with_context(lang='ar_001').partner_id.state_id.name" style="unicode-bidi: embed; direction: ltr;" />
+                        ,                        <span t-if="o.partner_id.zip" t-field="o.partner_id.zip" style="unicode-bidi: embed; direction: ltr;" />
+                        ,                        <span t-if="o.partner_id.city" t-field="o.partner_id.city" style="unicode-bidi: embed; direction: ltr;" />
+                        ,                        <span t-if="o.partner_id.street2" t-field="o.partner_id.street2" style="unicode-bidi: embed; direction: ltr;" />
+                        ,                        <span t-if="o.partner_id.street" t-field="o.partner_id.street" style="unicode-bidi: embed; direction: ltr;" />
+                        <b> :العنوان </b>
+                    </div>
+                    <div t-if="o.partner_id.vat">
+                        <span t-field="o.partner_id.vat" />
+                        <b> :الرقم الضريبي</b>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    
+    <!-- Layout record that will use base layout and address block -->
+    <template id="tek_custom_layout">
+        <t t-call="custom_invoice.tek_base_layout">
+            <div t-attf-class="article o_tek_report_custom " t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="en_US">
+            
+                <t t-call="web.address_layout"/>
+                <t t-out="0"/>
+            </div>
+        </t>
+    </template>
+
+    <!-- Option record seen in setting -->
+    <record id="tek_custom" model="report.layout">
+        <field name="name">Custom</field>
+        <field name="sequence">8</field>
+        <field name="view_id" ref="custom_invoice.tek_custom_layout" />
+    </record>
+
+
+</odoo>
