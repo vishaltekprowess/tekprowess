@@ -8,7 +8,7 @@
                 <t t-set="display_discount" t-value="any(l.discount for l in o.invoice_line_ids)" />
                 <div class="oe_structure"></div>
                 <table style="width: 100%; border-collapse: collapse; border-top: 1px solid #000;">
-                    <tbody>
+                    <thead>
                         <tr style="background-color: #f0f0f0;">
                             <th
                                 style="padding: 8px; border-right: 1px solid #000; text-align: left; width: 8%;">S
@@ -27,25 +27,68 @@
                                 RATE/PRICE</th>
                             <th style="padding: 8px; text-align: right; width: 15%;">SUB TOTAL</th>
                         </tr>
-                        <tr style="border-top: 1px solid #000;">
-                            <td
-                                style="padding: 8px; border-right: 1px solid #000; text-align: center;">
-                                1</td>
-                            <td style="padding: 8px; border-right: 1px solid #000;">ERP Mobile App
-                                implementation for June 2023</td>
-                            <td
-                                style="padding: 8px; border-right: 1px solid #000; text-align: center;">
-                                998314</td>
-                            <td
-                                style="padding: 8px; border-right: 1px solid #000; text-align: center;">
-                                1.00</td>
-                            <td
-                                style="padding: 8px; border-right: 1px solid #000; text-align: right;">
-                                0</td>
-                            <td style="padding: 8px; text-align: right;">0.00</td>
-                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="current_subtotal" t-value="0"/>
+                        <t t-set="current_total" t-value="0"/>
+                        <t t-set="lines" t-value="o.invoice_line_ids.sorted(key=lambda l: (-l.sequence, l.date, l.move_name, -l.id), reverse=True)"/>
+                        <t t-set="counter" t-value="0"/>
+                        <t t-foreach="lines" t-as="line">
+                            <t t-set="counter" t-value="counter + 1"/>
+                            <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal"/>
+                            <t t-set="current_total" t-value="current_total + line.price_total"/>
+                            <tr style="border-top: 1px solid #000;">
+                                <td
+                                    style="padding: 8px; border-right: 1px solid #000; text-align: center;">
+                                    <t t-esc="counter"/></td>
+                                <td style="padding: 8px; border-right: 1px solid #000;">
+                                    <span t-if="line.name" t-field="line.name" t-options="{'widget': 'text'}">Bacon Burger</span>
+                                </td>
+                                <td
+                                    style="padding: 8px; border-right: 1px solid #000; text-align: center;">
+                                    0</td>
+                                <td
+                                    style="padding: 8px; border-right: 1px solid #000; text-align: center;">
+                                    <span t-if="line.quantity" t-field="line.quantity" t-options="{'widget': 'text'}">0</span></td>
+                                <td style="padding: 8px; border-right: 1px solid #000; text-align: right;">
+                                    <span class="text-nowrap" t-field="line.price_unit">9.00</span>
+                                </td>
+                                <td style="padding: 8px; text-align: right;">
+                                     <span class="text-nowrap" t-field="line.price_subtotal">27.00</span>
+                                </td>
+                            </tr>
+
+                        </t>
                     </tbody>
                 </table>
+
+                <table style="width: 100%; border-collapse: collapse; border-top: 1px solid #000;">
+                    <tr>
+                        <td style="padding: 8px; width: 50%;"><strong>Amount</strong></td>
+                        <td style="padding: 8px; text-align: right; width: 50%; border-left: 1px solid #000;">
+                            <span  t-field="o.amount_untaxed">27.00</span>
+                        </td>
+                    </tr>
+                    <tr style="border-top: 1px solid #000;">
+                        <td style="padding: 8px;"><strong>CGST Tax @ 9% on cost ₹ 0.00</strong></td>
+                        <td style="padding: 8px; text-align: right; border-left: 1px solid #000;">
+                            <span  t-field="o.amount_tax">27.00</span>
+                        </td>
+                    </tr>
+                    <tr style="border-top: 1px solid #000;">
+                        <td style="padding: 8px;"><strong>Total Amount</strong></td>
+                        <td style="padding: 8px; text-align: right; border-left: 1px solid #000;">
+                            <span  t-field="o.amount_total">27.00</span>
+                        </td>
+                    </tr>
+                    <tr t-if="o.invoice_payment_term_id" style="border-top: 1px solid #000;">
+                        <td style="padding: 8px;"><strong>Payment Terms</strong></td>
+                        <td style="padding: 8px; text-align: right; border-left: 1px solid #000;"><strong>
+                            <span t-if="o.invoice_payment_term_id" t-field="o.invoice_payment_term_id.name" >15 Days</span>
+                        </strong></td>
+                    </tr>
+                </table>
+
                 <div style="border-top: 1px solid #000; padding: 15px; text-align: center;">
                     <p style="margin: 0 0 10px 0;">
                         <strong>Certified that the particulars given above are true and correct</strong>

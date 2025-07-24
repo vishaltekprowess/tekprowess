@@ -90,7 +90,8 @@
                             <strong>Invoice No</strong>
                         </td>
                         <td style="padding: 8px; border-right: 1px solid #000; width: 35%;">
-                            TP1-25-26-06-004</td>
+                            <span t-field="o.name" />
+                        </td>
                         <td
                             style="padding: 8px; border-right: 1px solid #000; background-color: #f0f0f0; width: 15%;"></td>
                         <td style="padding: 8px; width: 35%;"></td>
@@ -100,7 +101,10 @@
                             style="padding: 8px; border-right: 1px solid #000; background-color: #f0f0f0;">
                             <strong>Invoice Date</strong>
                         </td>
-                        <td style="padding: 8px; border-right: 1px solid #000;">6-Jul-2023</td>
+                        <td style="padding: 8px; border-right: 1px solid #000;">
+                            <span t-if="o.invoice_date and context_timestamp"
+                                t-esc="o.invoice_date.strftime('%Y-%m-%d')" />
+                        </td>
                         <td
                             style="padding: 8px; border-right: 1px solid #000; background-color: #f0f0f0;"></td>
                         <td style="padding: 8px;"></td>
@@ -112,17 +116,55 @@
                 <tbody>
 
                     <tr>
-                        <td
-                            style="padding: 10px; border-right: 1px solid #000; width: 50%; vertical-align: top;">
-                            <strong>TekProwess LLP</strong><br /> Plot B-42 Rouse Street,<br /> opp.
-                            D'Mart, Ratan, Pune<br /> PUNE - 411045 India<br /> Phone : xxxxx<br />
-                            GSTIN No : xxxxx<br /> Place of Supply : Maharashtra<br /> State Code :
-                            27 </td>
-                        <td style="padding: 10px; width: 50%; vertical-align: top;">
-                            <strong>WILDFIT WELLNESS PRIVATE LIMITED</strong><br /> S. NO. 58/21A
-                            (PART) 36/1, ABESSA AVENUE C-1/9,<br /> NAGAR ROAD, Pune,<br /> PUNE -
-                            411014 India<br /> Phone : xxxx<br /> GSTIN No : xxxxx<br /> Place of
-                            Supply : Maharashtra<br /> State Code : 27 </td>
+                        <td style="padding: 10px; border-right: 1px solid #000; width: 50%; vertical-align: top;">
+                            <strong>
+                                <span t-field="o.partner_id.name" />
+                            </strong> 
+                            <br/>
+                            <span t-if="o.partner_id.country_id.name" t-esc="o.partner_id.country_id.name" /> ,
+                            <span t-if="o.partner_id.state_id.name" t-esc="o.partner_id.state_id.name" /> ,
+                            <span t-if="o.partner_id.zip" t-field="o.partner_id.zip" /> ,
+                            <span t-if="o.partner_id.city" t-field="o.partner_id.city" /> ,
+                            <span t-if="o.partner_id.street2" t-field="o.partner_id.street2" /> ,
+                            <span t-if="o.partner_id.street" t-field="o.partner_id.street" />
+                            <br/> 
+                            Phone : <span t-if="o.partner_id.phone" t-field="o.partner_id.phone" />
+                            <br/>
+                            GSTIN No : <span t-if="o.partner_id.vat" t-field="o.partner_id.vat" />
+                            <br/>
+                            Place of Supply : <span t-if="o.partner_id.state_id.name" t-field="o.partner_id.state_id.name" />
+                            <br/>
+                            State Code : <span t-if="o.partner_id.state_id" t-field="o.partner_id.state_id" />
+                        </td>
+
+                        <td style="padding: 10px; border-right: 1px solid #000; width: 50%; vertical-align: top;">
+                            <strong>
+                                <span t-field="o.company_id.name"/>
+                            </strong>
+                            <br/>
+                            <span t-if="o.company_id.street" t-field="o.company_id.street"/>,
+                            <span t-if="o.company_id.street2" t-field="o.company_id.street2"/>,
+                            <span t-if="o.company_id.country_id.name" t-esc="o.company_id.country_id.name" /> ,
+                            <span t-if="o.company_id.city" t-field="o.company_id.city" /> ,
+                            <span t-if="o.company_id.state_id.name" t-esc="o.company_id.state_id.name" /> ,
+                            <span t-if="o.company_id.zip" t-field="o.company_id.zip" />
+                            <br/>
+                            <span t-if="o.company_id.country_id" t-esc="o.company_id.country_id.name"/>
+                            <br/>
+                            <t t-if="o.company_id.phone">
+                                Phone: <span t-field="o.company_id.phone"/><br/>
+                            </t>
+
+                            <t t-if="o.company_id.vat">
+                                GSTIN No: <span t-field="o.company_id.vat"/><br/>
+                            </t>
+
+                            <t t-if="o.company_id.state_id">
+                                Place of Supply: <span t-field="o.company_id.state_id.name"/><br/>
+                                State Code: <span t-field="o.company_id.state_id.code"/>
+                            </t>
+                        </td>
+
                     </tr>
                 </tbody>
             </table>
