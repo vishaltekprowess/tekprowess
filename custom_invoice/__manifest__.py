@@ -17,8 +17,10 @@ This module provides a custom invoice layout and additional features for managin
 
     'data': [
         # 'security/ir.model.access.csv',
+        "views/res_partner_bank_views.xml",
+        "report/paperformat_a4.xml",
         "report/custom_layout.xml",
-        "report/report_invoice.xml"
+        "report/report_invoice.xml",
     ],
 }
 

@@ -9,7 +9,7 @@
                 <div class="oe_structure"></div>
                 <table style="width: 100%; border-collapse: collapse; border-top: 1px solid #000;">
                     <thead>
-                        <tr style="background-color: #f0f0f0;">
+                        <tr style="background-color: #2174af;color: white;">
                             <th
                                 style="padding: 8px; border-right: 1px solid #000; text-align: left; width: 8%;">S
                                 NO</th>
@@ -44,9 +44,9 @@
                                 <td style="padding: 8px; border-right: 1px solid #000;">
                                     <span t-if="line.name" t-field="line.name" t-options="{'widget': 'text'}">Bacon Burger</span>
                                 </td>
-                                <td
-                                    style="padding: 8px; border-right: 1px solid #000; text-align: center;">
-                                    0</td>
+                                <td style="padding: 8px; border-right: 1px solid #000; text-align: center;">
+                                    <span t-if="line.product_id" t-field="line.product_id.l10n_in_hsn_code" t-options="{'widget': 'text'}">123456</span>
+                                </td>
                                 <td
                                     style="padding: 8px; border-right: 1px solid #000; text-align: center;">
                                     <span t-if="line.quantity" t-field="line.quantity" t-options="{'widget': 'text'}">0</span></td>
@@ -102,24 +102,36 @@
                 <div style="border-top: 1px solid #000; padding: 20px; text-align: center;">
                     <div
                         style="font-family: cursive; font-size: 24px; color: #0066CC; margin-bottom: 10px;">
-                        Prakhar</div>
+                        </div>
                     <p style="margin: 0;">
                         <strong>Authorized Signature</strong>
                     </p>
                 </div>
 
+                <!--terms and conditions-->
+                <t t-if="o.narration">
+                    <div style="border-top: 1px solid #000; padding: 15px;">
+                        <p style="margin: 0 0 5px 0;">
+                            <strong>Terms and Conditions:</strong>
+                        </p>
+                        <p t-if="not is_html_empty(o.narration)" class="mb-2">
+                            <span t-field="o.narration"/>
+                        </p>
+                    </div>
+                    
+                </t>
                 <!-- Bank Details -->
-                <div style="border-top: 1px solid #000; padding: 15px;">
-                    <p style="margin: 0 0 5px 0;">
-                        <strong>Bank Details:</strong>
-                    </p>
-                    <p style="margin: 0; font-size: 11px; line-height: 1.4;"> Beneficiary Bank Name:
-                        HDFC FIRST BANK LIMITED<br /> Beneficiary Account Name: TEKPROWESS LLP<br />
-                        Beneficiary Bank Account No: 50200069665005<br /> Beneficiary Bank Address:
-                        Shop No 1,2,3 Ground Floor Shreeyash No4-A, Building, No A, Wakad 411057<br />
-                        Beneficiary Bank Branch: Wakad Branch<br /> Beneficiary City: Pune<br />
-                        IFSC Code: HDFC0004344 </p>
-                </div>
+                <t t-if="o.partner_bank_id">
+                    <div style="border-top: 1px solid #000; padding: 15px;">
+                        <p style="margin: 0 0 5px 0;">
+                            <strong>Bank Details:</strong>
+                        </p>
+                        <p t-if="not is_html_empty(o.partner_bank_id.description)" class="mb-2">
+                            <span t-field="o.partner_bank_id.description"/>
+                        </p>
+                    </div>
+                </t>
+
 
 
             </div>
