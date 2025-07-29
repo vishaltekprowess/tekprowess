@@ -5,7 +5,7 @@
     <template id="tek_header_layout">
         <div class="header">
             <table style="width: 100%; border-collapse: collapse;border-width: 2px !important;">
-                <tbody style="border-width: 2px !important;border-bottom: 1px;">
+                <tbody style="border-width: 2px !important;border-bottom: 0px;">
 
                     <tr>
                         <td
@@ -86,7 +86,7 @@
 
                     <tr>
                         <td
-                            style="padding: 8px; border-right: 1px solid #000; background-color: #2174af;color: white; width: 25%;">
+                            style="padding: 8px; border-right: 1px solid #000; background-color: #f0f0f0; width: 25%;">
                             <strong>Invoice No</strong>
                         </td>
                         <td style="padding: 8px; border-right: 1px solid #000; width: 25%;">
@@ -95,7 +95,7 @@
                             </t>
                         </td>
                         <td
-                            style="padding: 8px; border-right: 1px solid #000; background-color: #2174af;color: white; width: 25%;">
+                            style="padding: 8px; border-right: 1px solid #000; background-color: #f0f0f0; width: 25%;">
                             <strong>Invoice Date</strong>
                         </td>
                         <td style="padding: 8px; border-right: 1px solid #000; width: 25%;">
@@ -110,7 +110,17 @@
 
             <table style="width: 100%; border-collapse: collapse; border-top: 1px solid #000;">
                 <tbody>
-
+                    <tr>
+                        <td
+                            style="padding: 8px; border-right: 1px solid #000; background-color: #2174af;color: white; width: 50%;">
+                            <strong>Service Provider:</strong>
+                        </td>
+                        <td
+                            style="padding: 8px; border-right: 1px solid #000; background-color: #2174af;color: white; width: 50%;">
+                            <strong>Bill To:</strong>
+                        </td>
+                    </tr>
+                    
                     <tr t-if="o">
                         <td style="padding: 10px; border-right: 1px solid #000; width: 50%; vertical-align: top;">
                             <strong>
